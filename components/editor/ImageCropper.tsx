@@ -3,26 +3,38 @@ import Cropper from 'react-easy-crop';
 import { useCVStore } from '@/store/useCVStore';
 
 export default function ImageCropper({ onComplete }: { onComplete: () => void }) {
+  // Define the expected type for croppedAreaPixels
+  interface CroppedAreaPixels {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  }
+
   const { profileImage, setField } = useCVStore();
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<CroppedAreaPixels | null>(null);
 
-  const onCropComplete = useCallback((_area: any, pixels: any) => {
+  const onCropComplete = useCallback((_area: any, pixels: CroppedAreaPixels) => {
     setCroppedAreaPixels(pixels);
   }, []);
 
   const generateCroppedImage = async () => {
+    // 1. Add this Guard Clause to satisfy TypeScript
+    if (!croppedAreaPixels) return; 
     try {
       const canvas = document.createElement('canvas');
       const image = new Image();
       image.src = profileImage;
       await new Promise((res) => (image.onload = res));
 
+      // Now TypeScript knows croppedAreaPixels is NOT null here
       canvas.width = croppedAreaPixels.width;
       canvas.height = croppedAreaPixels.height;
       const ctx = canvas.getContext('2d');
-
+      if (!ctx) return; // Another safety check for the canvas context
+      
       ctx.drawImage(
         image,
         croppedAreaPixels.x, croppedAreaPixels.y,
