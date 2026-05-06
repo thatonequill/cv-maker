@@ -104,7 +104,7 @@ const Resume = forwardRef<HTMLDivElement>((props, ref) => {
 
       {/* --- MAIN CONTENT (8 Columns) --- */}
       <div className="col-span-8 p-12 space-y-10 bg-white print:h-[297mm]">
-      {/* Skills Section Moved to Main Body */}
+        {/* Skills Section Moved to Main Body */}
         <section className="print:break-inside-avoid">
           <div className="flex items-center gap-3 mb-6 print:break-inside-avoid"><Code size={20} style={{ color: 'var(--primary)' }} /><h2 className="text-lg font-bold uppercase tracking-widest text-slate-800">{t.skills}</h2></div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-4">
@@ -177,6 +177,9 @@ const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                 <div className="text-sm font-medium" style={{ color: 'var(--primary)' }}>
                   {edu.subtitle || "School/University"}
                 </div>
+                <p className="text-xs text-slate-500 leading-relaxed whitespace-pre-line">
+                  {edu.desc}
+                </p>
               </div>
             ))}
           </div>
