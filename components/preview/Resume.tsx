@@ -103,7 +103,22 @@ const Resume = forwardRef<HTMLDivElement>((props, ref) => {
       </div>
 
       {/* --- MAIN CONTENT (8 Columns) --- */}
-      <div className="col-span-8 p-12 space-y-10 bg-white print:h-[297mm]">        
+      <div className="col-span-8 p-12 space-y-10 bg-white print:h-[297mm]">
+      {/* Skills Section Moved to Main Body */}
+        <section className="print:break-inside-avoid">
+          <div className="flex items-center gap-3 mb-6 print:break-inside-avoid"><Code size={20} style={{ color: 'var(--primary)' }} /><h2 className="text-lg font-bold uppercase tracking-widest text-slate-800">{t.skills}</h2></div>
+          <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+            {data.skills.map((skill) => (
+              <div key={skill.id}>
+                <div className="flex justify-between text-[10px] font-bold mb-1 uppercase"><span>{skill.name}</span></div>
+                <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                  <div className="h-full transition-all duration-700" style={{ backgroundColor: 'var(--primary)', width: `${skill.level}%` }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* Professional Experience[cite: 2] */}
         <section className="print:break-inside-avoid">
           <div className="flex items-center gap-3 mb-6 print:break-inside-avoid">
@@ -161,21 +176,6 @@ const Resume = forwardRef<HTMLDivElement>((props, ref) => {
                 </div>
                 <div className="text-sm font-medium" style={{ color: 'var(--primary)' }}>
                   {edu.subtitle || "School/University"}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Skills Section Moved to Main Body */}
-        <section className="print:break-inside-avoid">
-          <div className="flex items-center gap-3 mb-6 print:break-inside-avoid"><Code size={20} style={{ color: 'var(--primary)' }} /><h2 className="text-lg font-bold uppercase tracking-widest text-slate-800">{t.skills}</h2></div>
-          <div className="grid grid-cols-2 gap-x-8 gap-y-4">
-            {data.skills.map((skill) => (
-              <div key={skill.id}>
-                <div className="flex justify-between text-[10px] font-bold mb-1 uppercase"><span>{skill.name}</span></div>
-                <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                  <div className="h-full transition-all duration-700" style={{ backgroundColor: 'var(--primary)', width: `${skill.level}%` }} />
                 </div>
               </div>
             ))}

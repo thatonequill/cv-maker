@@ -93,17 +93,17 @@ export default function Home() {
             {/* Personal Details[cite: 1, 2] */}
             <div className="grid grid-cols-1 gap-4">
               <input 
-                placeholder="First Name"
+                placeholder="Ellen"
                 onChange={(e) => setField('firstName', e.target.value)}
                 className="p-3 bg-background border border-border rounded-xl text-sm outline-none focus:border-primary"
               />
               <input 
-                placeholder="Last Name"
+                placeholder="Joe"
                 onChange={(e) => setField('lastName', e.target.value)}
                 className="p-3 bg-background border border-border rounded-xl text-sm outline-none focus:border-primary"
               />
               <input 
-                placeholder={"Role"}
+                placeholder={"VHK Service Specialst"}
                 onChange={(e) => setField('role', e.target.value)}
                 className="p-3 bg-background border border-border rounded-xl text-sm outline-none focus:border-primary"
               />
@@ -111,22 +111,22 @@ export default function Home() {
 
             <div className="grid grid-cols-2 gap-4">
               <input 
-                placeholder="Email"
+                placeholder="ellen.joe@vhk.zzz"
                 onChange={(e) => setField('email', e.target.value)}
                 className="p-3 bg-background border border-border rounded-xl text-sm outline-none focus:border-primary"
               />
               <input
-                placeholder="Location"
+                placeholder="Sixth Street, New Eridu"
                 onChange={(e) => setField('location', e.target.value)}
                 className="p-3 bg-background border border-border rounded-xl text-sm outline-none focus:border-primary"
               />
               <input 
-                placeholder="Phone"
+                placeholder="01 23 45 67 89"
                 onChange={(e) => setField('phone', e.target.value)}
                 className="p-3 bg-background border border-border rounded-xl text-sm outline-none focus:border-primary"
               />
               <input 
-                placeholder="Website"
+                placeholder="qtqwill.dev"
                 onChange={(e) => setField('website', e.target.value)}
                 className="p-3 bg-background border border-border rounded-xl text-sm outline-none focus:border-primary"
               />
