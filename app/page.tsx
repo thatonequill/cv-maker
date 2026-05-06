@@ -1,65 +1,191 @@
-import Image from "next/image";
+"use client";
+
+import { useRef, useState } from 'react';
+import { useReactToPrint } from 'react-to-print';
+import { Download, Briefcase, GraduationCap, Heart, User, Globe, Upload } from 'lucide-react';
+
+import { useCVStore } from '@/store/useCVStore';
+import Resume from '@/components/preview/Resume';
+import ListEditor from '@/components/editor/ListEditor';
+import SkillsEditor from '@/components/editor/SkillsEditor';
+import LanguageEditor from '@/components/editor/LanguageEditor';
+import SoftSkillsEditor from '@/components/editor/SoftSkillsEditor';
+import ThemeEditor from '@/components/editor/ThemeEditor';
+import ImageCropper from '@/components/editor/ImageCropper';
 
 export default function Home() {
+  const [isCropping, setIsCropping] = useState(false);
+
+  const { profileImage, croppedImage, setField, setImage, lang, toggleLang, translations, interests } = useCVStore();
+  const componentRef = useRef<HTMLDivElement>(null);
+  const t = translations[lang]; // Current localized titles
+
+  const handlePrint = useReactToPrint({
+    contentRef: componentRef, // Changed from 'content' to 'contentRef'
+    documentTitle: 'My_Resume',
+  });
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <main className="flex flex-col lg:flex-row h-screen bg-background">
+      {/* LEFT: EDITOR SIDE */}
+      <aside className="w-full lg:w-1/3 p-8 overflow-y-auto border-r border-border bg-card shadow-inner">
+        <div className="space-y-8">
+          <header className="flex justify-between items-start">
+            <div>
+              <h1 className="text-2xl font-bold text-card-foreground">CV Editor</h1>
+              <p className="text-sm text-foreground/70">Refine your professional profile.</p>
+            </div>
+            {/* Language Toggle Button[cite: 1] */}
+            <button 
+              onClick={toggleLang}
+              className="flex items-center gap-2 px-3 py-1.5 bg-primary/10 text-primary rounded-full text-xs font-bold uppercase tracking-widest hover:bg-primary/20 transition-colors"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+              <Globe size={14} />
+              {lang === 'en' ? 'EN 🇬🇧' : 'FR 🇫🇷'}
+            </button>
+          </header>
+
+          <div className="space-y-10">
+            {/* Image Upload[cite: 1, 2] */}
+            <section className="space-y-4">
+              <label className="text-[10px] font-bold uppercase text-foreground/50 flex items-center gap-2">
+                <User size={14} /> Profile Picture
+              </label>
+              
+              <div className="flex items-center gap-4">
+                {/* Avatar Preview */}
+                <div className="relative w-16 h-16 rounded-full bg-slate-100 border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden shrink-0">
+                  {croppedImage ? (
+                    <img src={croppedImage} className="w-full h-full object-cover" />
+                  ) : (
+                    <User size={24} className="text-slate-400" />
+                  )}
+                </div>
+
+                {/* Custom Button Layout */}
+                <div className="flex-1">
+                  <label className="cursor-pointer group">
+                    <div className="flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-border rounded-xl text-sm font-semibold text-slate-600 transition-all group-hover:border-primary group-hover:text-primary shadow-sm">
+                      <Upload size={16} />
+                      {lang === 'en' ? 'Upload Photo' : 'Charger Photo'}
+                    </div>
+                    <input 
+                      type="file" 
+                      accept="image/*"
+                      className="hidden" // Hide the ugly default input
+                      onChange={(e) => {
+                        if (e.target.files?.[0]) {
+                          setImage(e.target.files[0]);
+                          setIsCropping(true);
+                        }
+                      }}
+                    />
+                  </label>
+                  <p className="text-[10px] text-slate-400 mt-2 italic">
+                    {lang === 'en' ? 'PNG or JPG, max 5MB' : 'PNG ou JPG, max 5Mo'}
+                  </p>
+                </div>
+              </div>
+
+              {isCropping && <ImageCropper onComplete={() => setIsCropping(false)} />}
+            </section>
+
+            {/* Personal Details[cite: 1, 2] */}
+            <div className="grid grid-cols-1 gap-4">
+              <input 
+                placeholder="First Name"
+                onChange={(e) => setField('firstName', e.target.value)}
+                className="p-3 bg-background border border-border rounded-xl text-sm outline-none focus:border-primary"
+              />
+              <input 
+                placeholder="Last Name"
+                onChange={(e) => setField('lastName', e.target.value)}
+                className="p-3 bg-background border border-border rounded-xl text-sm outline-none focus:border-primary"
+              />
+              <input 
+                placeholder={"Role"}
+                onChange={(e) => setField('role', e.target.value)}
+                className="p-3 bg-background border border-border rounded-xl text-sm outline-none focus:border-primary"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <input 
+                placeholder="Email"
+                onChange={(e) => setField('email', e.target.value)}
+                className="p-3 bg-background border border-border rounded-xl text-sm outline-none focus:border-primary"
+              />
+              <input
+                placeholder="Location"
+                onChange={(e) => setField('location', e.target.value)}
+                className="p-3 bg-background border border-border rounded-xl text-sm outline-none focus:border-primary"
+              />
+              <input 
+                placeholder="Phone"
+                onChange={(e) => setField('phone', e.target.value)}
+                className="p-3 bg-background border border-border rounded-xl text-sm outline-none focus:border-primary"
+              />
+              <input 
+                placeholder="Website"
+                onChange={(e) => setField('website', e.target.value)}
+                className="p-3 bg-background border border-border rounded-xl text-sm outline-none focus:border-primary"
+              />
+            </div>
+
+            {/* Dynamic Sections*/}
+
+            <LanguageEditor />
+
+            <SoftSkillsEditor />
+
+            <ListEditor 
+              title={t.experience} 
+              listName="experiences" 
+              icon={Briefcase} // Added Icon
+              labels={{ title: 'Role', subtitle: 'Company' }} 
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+            <ListEditor 
+              title={t.education} 
+              listName="education" 
+              icon={GraduationCap} // Added Icon
+              labels={{ title: 'Degree', subtitle: 'School' }} 
+            />
+
+            <SkillsEditor />
+
+            {/* Interests Section */}
+            <section className="space-y-4">
+              <h3 className="font-bold text-card-foreground text-sm uppercase tracking-wider flex items-center gap-2">
+                <Heart size={16} className="text-primary" />
+                {t.interests}
+              </h3>
+              <textarea 
+                value={interests}
+                onChange={(e) => setField('interests', e.target.value)}
+                placeholder="Origami, Gaming, Graphic Design..."
+                className="w-full p-3 bg-background border border-border rounded-xl text-sm h-24 outline-none focus:border-primary"
+              />
+            </section>
+          </div>
+
+          <ThemeEditor />
+          
+          <button 
+            onClick={() => handlePrint()}
+            className="w-full flex items-center justify-center gap-2 bg-primary text-white py-4 rounded-2xl font-bold shadow-lg shadow-primary/20 hover:opacity-90 transition-all sticky bottom-0"
           >
-            Documentation
-          </a>
+            <Download size={20} /> {t.download}
+          </button>
         </div>
-      </main>
-    </div>
+      </aside>
+
+      {/* RIGHT: PREVIEW SIDE[cite: 1] */}
+      <section className="hidden lg:flex w-2/3 bg-slate-200 items-start justify-center p-8 overflow-y-auto">
+        <div className="shadow-2xl origin-top scale-90">
+          <Resume ref={componentRef} />
+        </div>
+      </section>
+    </main>
   );
 }
