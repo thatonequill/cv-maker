@@ -137,7 +137,9 @@ export default function Home() {
             <LanguageEditor />
 
             <SoftSkillsEditor />
-
+            
+            <SkillsEditor />
+            
             <ListEditor 
               title={t.experience} 
               listName="experiences" 
@@ -151,8 +153,6 @@ export default function Home() {
               icon={GraduationCap} // Added Icon
               labels={{ title: 'Degree', subtitle: 'School' }} 
             />
-
-            <SkillsEditor />
 
             {/* Interests Section */}
             <section className="space-y-4">
