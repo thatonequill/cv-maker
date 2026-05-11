@@ -10,17 +10,17 @@
 }
 
 :root {
-    /* Deep Violet & Mauve Theme */
-    --background: #f5f3ff; /* Mauve-50 (Extremely light violet-white) */
-    --foreground: #4b5563; /* Gray-600 (Soft neutral text) */
+    /* Light Blue Theme */
+    --background: #e3f2fd; /* Light Blue-50 */
+    --foreground: #37474f; /* Blue-Grey-800 */
 
     --card: #ffffff;
-    --card-foreground: #2e1065; /* Violet-950 (Dark contrast for headers)[cite: 3] */
+    --card-foreground: #1a237e; /* Indigo-900 (Dark contrast for headers) */
 
-    --primary: #7c3aed; /* Violet-600 (Deep Violet Accent)[cite: 3] */
+    --primary: #03a9f4; /* Light Blue-500 (Vibrant blue accent) */
 
-    --muted: #ede9fe; /* Violet-100 (Mauve background for buttons/inputs)[cite: 3] */
-    --border: #ddd6fe; /* Violet-200 (Soft violet borders)[cite: 3] */
+    --muted: #e1f5fe; /* Light Blue-50 (Muted background for buttons/inputs) */
+    --border: #b3e5fc; /* Light Blue-100 (Soft blue borders) */
 }
 
 @layer base {
