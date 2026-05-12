@@ -15,6 +15,17 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "CV Maker | Design Your Career",
   description: "A modern, bilingual CV builder with live theme customization.",
+  themeColor: '#03a9f4',
+  openGraph: {
+    title: "CV Maker | Design Your Career",
+    description: "A modern, bilingual CV builder with live theme customization.",
+    url: "https://cvmaker.qtqwill.dev",
+    siteName: "CV Maker",
+    type: "website",
+    images: [
+      { url: '/favicon-32x32.png', width: 32, height: 32, alt: 'CV Maker Favicon' },
+    ],
+  },
   icons: {
     icon: [
       { url: '/favicon.ico' },
