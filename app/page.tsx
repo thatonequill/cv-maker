@@ -103,7 +103,7 @@ export default function Home() {
                 className="p-3 bg-background border border-border rounded-xl text-sm outline-none focus:border-primary"
               />
               <input 
-                placeholder={"VHK Service Specialst"}
+                placeholder={"VHK Service Specialist"}
                 onChange={(e) => setField('role', e.target.value)}
                 className="p-3 bg-background border border-border rounded-xl text-sm outline-none focus:border-primary"
               />
