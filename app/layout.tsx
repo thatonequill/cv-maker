@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -12,10 +12,13 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const viewport: Viewport = {
+  themeColor: '#03a9f4',
+};
+
 export const metadata: Metadata = {
   title: "CV Maker | Design Your Career",
   description: "A modern, bilingual CV builder with live theme customization.",
-  themeColor: '#03a9f4',
   openGraph: {
     title: "CV Maker | Design Your Career",
     description: "A modern, bilingual CV builder with live theme customization.",
